@@ -1,0 +1,102 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Clustering App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            width: 100%;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .algorithm-info {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .wine-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: #6a11cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="wine-icon">
+                    <i class="fas fa-wine-glass-alt"></i>
+                </div>
+                <h1 class="display-6">MITS 002 - Clustering Activity 1</h1>
+                <p class="lead">Analyze wine data using advanced clustering algorithms</p>
+            </div>
+            <div class="card-body">
+                <div class="algorithm-info">
+                    <h5><i class="fas fa-info-circle me-2"></i>About This Tool</h5>
+                    <p>This application applies three clustering algorithms to the UCI Wine dataset:</p>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item bg-transparent"><i class="fas fa-check-circle text-primary me-2"></i>K-Means Clustering</li>
+                        <li class="list-group-item bg-transparent"><i class="fas fa-check-circle text-primary me-2"></i>PAM (Partitioning Around Medoids)</li>
+                        <li class="list-group-item bg-transparent"><i class="fas fa-check-circle text-primary me-2"></i>CLARA (Clustering Large Applications)</li>
+                    </ul>
+                    <p class="mb-0">The results will include visualizations and performance metrics for comparison.</p>
+                </div>
+                
+                <div class="d-flex justify-content-center w-100">
+                    <form method="POST" action="/generate" class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-chart-pie me-2"></i>Generate Clustering Analysis
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!-- templates/results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clustering Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px 0;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-bottom: 30px;
+        }
+        .card-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+        .table {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .table thead {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+        }
+        .table th {
+            font-weight: 600;
+            border: none;
+        }
+        .table td {
+            border-color: #eee;
+        }
+        .img-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+        .img-container:hover {
+            transform: translateY(-5px);
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .summary-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        .algorithm-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .best-algorithm {
+            background-color: rgba(106, 17, 203, 0.1);
+            border-left: 4px solid #6a11cb;
+            padding: 10px 15px;
+            border-radius: 0 5px 5px 0;
+            margin: 15px 0;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+        .section-title {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+        }
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="display-6">
+                    <i class="fas fa-chart-pie me-2"></i>
+                    Wine Clustering Results
+                </h1>
+                <p class="lead">Comparison of K-Means, PAM, and CLARA clustering algorithms</p>
+            </div>
+            <div class="card-body">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h3 class="section-title">Performance Metrics</h3>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Algorithm</th>
+                                        <th>Silhouette Score</th>
+                                        <th>Adjusted Rand Index</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for result in results %}
+                                    <tr {% if result.name == best.name %}class="table-primary"{% endif %}>
+                                        <td>
+                                            <strong>{{ result.name }}</strong>
+                                            {% if result.name == best.name %}
+                                            <span class="badge bg-success ms-2">Best</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ result.sil|round(4) }}</td>
+                                        <td>{{ result.rand|round(4) }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="section-title">Cluster Visualizations</h3>
+                <div class="row">
+                    {% for result in results %}
+                    <div class="col-md-4">
+                        <div class="img-container">
+                            <div class="algorithm-badge">{{ result.name }}</div>
+                            <img src="/{{ result.img }}" alt="{{ result.name }} Visualization" class="img-fluid">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="summary-card">
+                            <h3 class="section-title">Summary & Conclusion</h3>
+                            <div class="best-algorithm">
+                                <h5><i class="fas fa-trophy me-2 text-warning"></i>Best Performing Algorithm</h5>
+                                <p class="mb-0">Based on the evaluation metrics, <strong>{{ best.name }}</strong> achieved the highest performance with a Silhouette Score of {{ best.sil|round(4) }} and an Adjusted Rand Index of {{ best.rand|round(4) }}.</p>
+                            </div>
+                            <p class="mt-3">
+                                <i class="fas fa-info-circle me-2 text-primary"></i>
+                                The <strong>Silhouette Score</strong> measures how well-separated the clusters are, with values ranging from -1 to 1. Higher values indicate better-defined clusters.
+                            </p>
+                            <p>
+                                <i class="fas fa-info-circle me-2 text-primary"></i>
+                                The <strong>Adjusted Rand Index</strong> compares the predicted clusters with the true labels, with values ranging from -1 to 1. Higher values indicate better alignment with the ground truth.
+                            </p>
+                            <p>
+                                This comparison demonstrates that different algorithms may perform better depending on the data distribution. Using both internal (Silhouette) and external (Adjusted Rand Index) evaluation metrics helps identify the most effective clustering approach for this dataset.
+                            </p>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a href="/" class="btn btn-outline-primary">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
